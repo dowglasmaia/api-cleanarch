@@ -6,10 +6,10 @@ import com.maia.cleanarch.dataprovider.repository.CustomerRepository;
 import com.maia.cleanarch.dataprovider.repository.mapper.CustomerMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
 @Log4j2
+@Service
 public class InsertCustomerImpl implements InsertCustomer {
     @Autowired
     private CustomerRepository customerRepository;

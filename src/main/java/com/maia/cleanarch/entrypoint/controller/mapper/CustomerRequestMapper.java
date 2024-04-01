@@ -6,10 +6,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface CustomerMapper {
+public interface CustomerRequestMapper {
+
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "address", ignore = true)
-    @Mapping(target = "isValidCpf", ignore = true)
+    //@Mapping(target = "address", ignore = true)
+    //@Mapping(target = "isValidCpf", ignore = true)
     Customer toCustomer(CustomerRequest request);
 }
