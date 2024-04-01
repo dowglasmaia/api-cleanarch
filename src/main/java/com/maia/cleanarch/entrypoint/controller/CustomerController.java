@@ -1,16 +1,14 @@
 package com.maia.cleanarch.entrypoint.controller;
 
+import com.maia.cleanarch.core.usecase.FindCustomerByIdUseCase;
 import com.maia.cleanarch.core.usecase.InsertCustomerUseCase;
 import com.maia.cleanarch.entrypoint.controller.mapper.CustomerRequestMapper;
 import com.maia.cleanarch.entrypoint.controller.request.CustomerRequest;
+import com.maia.cleanarch.entrypoint.controller.response.CustomerResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -19,15 +17,23 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
 
+    private final CustomerRequestMapper mapper;
 
     private final InsertCustomerUseCase insertCustomerUseCase;
-    private final CustomerRequestMapper mapper;
+    private final FindCustomerByIdUseCase findCustomerByIdUseCase;
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody CustomerRequest request) {
         var customer = mapper.toCustomer(request);
         insertCustomerUseCase.insert(customer, request.getZipCode());
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerResponse> findById(@PathVariable String id) {
+        var customer = findCustomerByIdUseCase.find(id);
+        var customerResponse = mapper.toCustomerResponse(customer);
+        return ResponseEntity.status(HttpStatus.OK).body(customerResponse);
     }
 
 }
